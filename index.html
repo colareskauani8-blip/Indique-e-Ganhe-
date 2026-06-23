@@ -93,12 +93,10 @@ tr:hover td{background:#FAFAFE}
 /* BADGES STATUS */
 .badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
 .badge-pendente{background:#FEF3C7;color:#92400E}
-.badge-aguardo{background:#DBEAFE;color:#1E40AF}
-.badge-liberado{background:#D1FAE5;color:#065F46}
-.badge-bloq-ind{background:#FEE2E2;color:#991B1B}
-.badge-bloq-alu{background:#FED7D7;color:#7F1D1D}
+.badge-liberado{background:#DBEAFE;color:#1E40AF}
+.badge-bloqueado{background:#FEE2E2;color:#991B1B}
 .badge-pago{background:#DCFCE7;color:#14532D}
-.badge-agendado{background:#EDE9FE;color:#4A154B}
+.badge-agendado{background:#DCFCE7;color:#14532D}
 
 /* BUTTONS */
 .btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid #E2E8F0;background:#fff;color:#1a1a2e;transition:all .15s}
@@ -235,7 +233,7 @@ tr:hover td{background:#FAFAFE}
         <input type="text" id="busca" placeholder="🔍 Buscar por nome..." oninput="renderIndicacoes()">
         <select id="filtro-status" onchange="renderIndicacoes()">
           <option value="">Todos os status</option>
-          <option>Pendente</option><option>Aguardo confirmação</option><option>Pagamento liberado</option>
+          <option>Pendente</option><option>Pagamento liberado</option>
           <option>Bloqueado - indicado devendo</option><option>Bloqueado - aluno que indicou devendo</option>
           <option>Pago</option><option>Agendado</option>
         </select>
@@ -405,7 +403,7 @@ const BADGE_MAP={
   'Bloqueado - indicado devendo':'badge-bloq-ind','Bloqueado - aluno que indicou devendo':'badge-bloq-alu',
   'Pago':'badge-pago','Agendado':'badge-agendado'
 };
-const TODAS_OPCOES=Object.values(S);
+const TODAS_OPCOES=Object.values(S).filter(s=>s!=='Aguardo confirmação');
 
 let indicacoes=[
   // ── JANEIRO ──────────────────────────────────────────────
@@ -473,8 +471,8 @@ let indicacoes=[
   {id:59, unidade:'tks',    mes:'Abr/26',responsavel:'Bruna Gonçalves',  indicador:'Wysllana Fernandes',                           pix:'141.639.886-45',                      tel:'31 99142-3563',  indicado:'Valquiria Costa do Nascimento',             pagou:'Ok',      obs:'', status:'Pago',dataPagamento:'15/05/2026'},
   {id:60, unidade:'tks',    mes:'Abr/26',responsavel:'Bruna Gonçalves',  indicador:'Wysllana Fernandes',                           pix:'141.639.886-45',                      tel:'31 99142-3563',  indicado:'Isabela Barbosa Oliveira',                 pagou:'Ok',      obs:'', status:'Pago',dataPagamento:'15/05/2026'},
   {id:61, unidade:'tks',    mes:'Abr/26',responsavel:'Cristiana',        indicador:'Daiana Maciel Cezar',                          pix:'012.153.970-97',                      tel:'(54) 09957-1921',indicado:'Mariana Cristina Stefenon Brand de Camargo',pagou:'Ok',     obs:'', status:'Pago',dataPagamento:'15/05/2026'},
-  {id:62, unidade:'tks',    mes:'Abr/26',responsavel:'Bruna Gonçalves',  indicador:'Geovanna Rodrigues Ortelan',                   pix:'50583916864',                         tel:'(17) 32215-2764',indicado:'Enzo Rodrigues Ortelan',                   pagou:'Pendente', obs:'', status:'Aguardo confirmacao',dataPagamento:''},
-  {id:63, unidade:'tks',    mes:'Abr/26',responsavel:'Bruna Rafaela',    indicador:'Amanda da Silva Mendes',                       pix:'',                                    tel:'',               indicado:'Giovanna Rafaelly Sergio dos Santos',       pagou:'Pendente', obs:'', status:'Aguardo confirmacao',dataPagamento:''},
+  {id:62, unidade:'tks',    mes:'Abr/26',responsavel:'Bruna Gonçalves',  indicador:'Geovanna Rodrigues Ortelan',                   pix:'50583916864',                         tel:'(17) 32215-2764',indicado:'Enzo Rodrigues Ortelan',                   pagou:'Pendente', obs:'', status:'Pendente',dataPagamento:''},
+  {id:63, unidade:'tks',    mes:'Abr/26',responsavel:'Bruna Rafaela',    indicador:'Amanda da Silva Mendes',                       pix:'',                                    tel:'',               indicado:'Giovanna Rafaelly Sergio dos Santos',       pagou:'Pendente', obs:'', status:'Pendente',dataPagamento:''},
   {id:64, unidade:'tks',    mes:'Abr/26',responsavel:'Bruna Rafaela',    indicador:'Ana Paula Favero de Ataide',                   pix:'802ae1b-886e-4f84-aff1-211e4d88a3',  tel:'31653581962',    indicado:'Anny Caroline Macedo Medeiros',             pagou:'Ok',      obs:'', status:'Pago',dataPagamento:'15/05/2026'},
   {id:65, unidade:'tks',    mes:'Abr/26',responsavel:'Julia Kunz',       indicador:'Daniel Ribeiro',                               pix:'8434968940',                          tel:'55 41 9862-2669',indicado:'Kamilla Ribeiro Dantas',                   pagou:'Ok',      obs:'', status:'Pago',dataPagamento:'15/05/2026'},
   {id:66, unidade:'tks',    mes:'Abr/26',responsavel:'Bruna Gonçalves',  indicador:'Andressa Reis de Freitas',                     pix:'3590566019',                          tel:'(54) 98142-8578',indicado:'Gustavo Formigheri',                        pagou:'Ok',      obs:'', status:'Pago',dataPagamento:'15/05/2026'},
@@ -489,14 +487,14 @@ let indicacoes=[
   {id:74, unidade:'tks',    mes:'Mai/26',responsavel:'Bruna Rafaela',    indicador:'Karina Ursula',                                pix:'',                                    tel:'',               indicado:'Ana Paula Bento Soares da Silva',           pagou:'Pendente', obs:'', status:'Bloqueado - indicado devendo',dataPagamento:''},
   {id:75, unidade:'tks',    mes:'Mai/26',responsavel:'Bruna Gonçalves',  indicador:'Ana Paula Barros de Oliveira',                 pix:'2469077206',                          tel:'54991358222',    indicado:'Rayanne Karla Rodrigues de Aguiar',         pagou:'Ok',      obs:'', status:'Pago',dataPagamento:'15/06/2026'},
   {id:76, unidade:'tks',    mes:'Mai/26',responsavel:'Bruna Rafaela',    indicador:'Ian Ribeiro',                                  pix:'3105994408',                          tel:'81984821211',    indicado:'Guilherme da Silva Costa',                 pagou:'Ok',      obs:'', status:'Pago',dataPagamento:'15/06/2026'},
-  {id:77, unidade:'tks',    mes:'Mai/26',responsavel:'Cristiana',        indicador:'Milena Truzzi Norder',                         pix:'',                                    tel:'',               indicado:'Rafael Henrique Araujo de Souza',           pagou:'Pendente', obs:'', status:'Aguardo confirmacao',dataPagamento:''},
+  {id:77, unidade:'tks',    mes:'Mai/26',responsavel:'Cristiana',        indicador:'Milena Truzzi Norder',                         pix:'',                                    tel:'',               indicado:'Rafael Henrique Araujo de Souza',           pagou:'Pendente', obs:'', status:'Pendente',dataPagamento:''},
   {id:78, unidade:'tks',    mes:'Mai/26',responsavel:'Bruna Gonçalves',  indicador:'Vanessa Torelli Sayeg',                        pix:'Sayeg2016@gmail.com',                 tel:'(19) 34204-4398',indicado:'Isabella de Oliveira Costa',               pagou:'Pendente',obs:'', status:'Bloqueado - aluno que indicou devendo',dataPagamento:''},
   {id:79, unidade:'tks',    mes:'Mai/26',responsavel:'Cristiana',        indicador:'Maria Eduarda de Souza Wanderley',             pix:'2155784651',                          tel:'31 97513-5414',  indicado:'Camilla Cristina Da Silva',                pagou:'Pendente',obs:'', status:'Bloqueado - indicado devendo',dataPagamento:''},
   {id:80, unidade:'tks',    mes:'Mai/26',responsavel:'Bruna Rafaela',    indicador:'Isabelle Fernandes Moreira Azevedo Albuquerque',pix:'lsa.azevedo12@gmail.com',            tel:'24 998382630',   indicado:'Edna Viana Claudino de Freitas',            pagou:'Ok',      obs:'', status:'Pago',dataPagamento:'15/06/2026'},
-  {id:81, unidade:'tks',    mes:'Mai/26',responsavel:'Bruna Gonçalves',  indicador:'Bruno Rafael Pivetti',                         pix:'',                                    tel:'',               indicado:'Beatriz Teixeira Belmon',                  pagou:'Pendente', obs:'', status:'Aguardo confirmacao',dataPagamento:''},
-  {id:82, unidade:'tks',    mes:'Mai/26',responsavel:'Bruna Gonçalves',  indicador:'Bruno Rafael Pivetti',                         pix:'',                                    tel:'',               indicado:'Bryan Felix Simoes',                       pagou:'Pendente', obs:'', status:'Aguardo confirmacao',dataPagamento:''},
-  {id:83, unidade:'tks',    mes:'Mai/26',responsavel:'Bruna Gonçalves',  indicador:'Bruno Rafael Pivetti',                         pix:'',                                    tel:'',               indicado:'Joao Vitor Faria',                         pagou:'Pendente', obs:'', status:'Aguardo confirmacao',dataPagamento:''},
-  {id:84, unidade:'tks',    mes:'Mai/26',responsavel:'Bruna Gonçalves',  indicador:'Bruno Rafael Pivetti',                         pix:'',                                    tel:'',               indicado:'Isabela Vieira Lopes',                     pagou:'Pendente', obs:'', status:'Aguardo confirmacao',dataPagamento:''},
+  {id:81, unidade:'tks',    mes:'Mai/26',responsavel:'Bruna Gonçalves',  indicador:'Bruno Rafael Pivetti',                         pix:'',                                    tel:'',               indicado:'Beatriz Teixeira Belmon',                  pagou:'Pendente', obs:'', status:'Pendente',dataPagamento:''},
+  {id:82, unidade:'tks',    mes:'Mai/26',responsavel:'Bruna Gonçalves',  indicador:'Bruno Rafael Pivetti',                         pix:'',                                    tel:'',               indicado:'Bryan Felix Simoes',                       pagou:'Pendente', obs:'', status:'Pendente',dataPagamento:''},
+  {id:83, unidade:'tks',    mes:'Mai/26',responsavel:'Bruna Gonçalves',  indicador:'Bruno Rafael Pivetti',                         pix:'',                                    tel:'',               indicado:'Joao Vitor Faria',                         pagou:'Pendente', obs:'', status:'Pendente',dataPagamento:''},
+  {id:84, unidade:'tks',    mes:'Mai/26',responsavel:'Bruna Gonçalves',  indicador:'Bruno Rafael Pivetti',                         pix:'',                                    tel:'',               indicado:'Isabela Vieira Lopes',                     pagou:'Pendente', obs:'', status:'Pendente',dataPagamento:''},
   {id:85, unidade:'tks',    mes:'Mai/26',responsavel:'Bruna Gonçalves',  indicador:'Mariane Monteiro Dias',                        pix:'449.211.078-07',                      tel:'(19) 98116 5068',indicado:'Bruno Rafael Pivetti',                     pagou:'Ok',      obs:'', status:'Pago',dataPagamento:'15/06/2026'},
   {id:86, unidade:'tks',    mes:'Mai/26',responsavel:'Bruna Gonçalves',  indicador:'Telma Nataly Leite',                           pix:'',                                    tel:'',               indicado:'Thais Mariana Leite',                      pagou:'Pendente',obs:'', status:'Bloqueado - aluno que indicou devendo',dataPagamento:''},
   {id:87, unidade:'tks',    mes:'Mai/26',responsavel:'Bruna Rafaela',    indicador:'Teacher Lizi Salvador',                        pix:'95151257072',                         tel:'54 8159-5680',   indicado:'Giuseppe Miguez Rocha Pipolo',             pagou:'Ok',      obs:'Sabri paga', status:'Pago',dataPagamento:'15/06/2026'},
@@ -567,12 +565,11 @@ function statusBadge(s){return `<span class="badge ${BADGE_MAP[s]||'badge-penden
 function statusStyle(s){
   const m={
     'Pendente':                             'background:#FEF3C7;color:#92400E;',
-    'Aguardo confirmação':                  'background:#DBEAFE;color:#1E40AF;',
-    'Pagamento liberado':                   'background:#D1FAE5;color:#065F46;',
+    'Pagamento liberado':                   'background:#DBEAFE;color:#1E40AF;',
     'Bloqueado - indicado devendo':         'background:#FEE2E2;color:#991B1B;',
-    'Bloqueado - aluno que indicou devendo':'background:#FED7D7;color:#7F1D1D;',
+    'Bloqueado - aluno que indicou devendo':'background:#FEE2E2;color:#991B1B;',
     'Pago':                                 'background:#DCFCE7;color:#14532D;',
-    'Agendado':                             'background:#EDE9FE;color:#4A154B;',
+    'Agendado':                             'background:#DCFCE7;color:#14532D;',
   };
   const cor=m[s]||'background:#F1F5F9;color:#64748B;';
   const arrow=encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6"><path d="M0 0l5 6 5-6z" fill="currentColor"/></svg>`);
@@ -770,54 +767,69 @@ function renderContatos(){
 
 function contatoCard(c){
   const isTks=c.unidade==='tks';
-  // Conta quantas indicações esse contato tem
   const qtdInd=indicacoes.filter(i=>i.indicador===c.nome&&i.unidade===c.unidade).length;
-  return `<div class="contato-card" id="cc-${c.id}">
-    <div class="avatar${isTks?' avatar-tks':''}" style="font-size:15px">${c.nome.charAt(0).toUpperCase()}</div>
-    <div class="contato-info" style="flex:1;min-width:0">
-      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px">
-        <strong style="font-size:14px">${c.nome}</strong>
-        ${ubadge(c.unidade)}
-        ${qtdInd>0?`<span style="font-size:11px;background:#EDE9FE;color:#4A154B;padding:2px 8px;border-radius:10px;font-weight:600">${qtdInd} indicação(ões)</span>`:''}
+  return `<div class="contato-card" id="cc-${c.id}" style="flex-direction:column;align-items:stretch;padding:0;overflow:hidden">
+    <div onclick="toggleContato(${c.id})" style="display:flex;align-items:center;gap:12px;padding:12px 16px;cursor:pointer;user-select:none" onmouseover="this.style.background='#FAFAFE'" onmouseout="this.style.background='transparent'">
+      <div class="avatar${isTks?' avatar-tks':''}" style="font-size:14px;width:36px;height:36px;flex-shrink:0">${c.nome.charAt(0).toUpperCase()}</div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+          <span style="font-size:14px;font-weight:600;color:#1a1a2e">${c.nome}</span>
+          ${ubadge(c.unidade)}
+          ${qtdInd>0?`<span style="font-size:11px;background:#EDE9FE;color:#4A154B;padding:2px 8px;border-radius:10px;font-weight:600">${qtdInd} indicação(ões)</span>`:''}
+        </div>
+        <div style="font-size:12px;color:#94A3B8;margin-top:2px">
+          ${c.pix?`🔑 ${c.pix}`:'Sem PIX cadastrado'}
+          ${c.tel?` · 📱 ${c.tel}`:''}
+        </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
-        <div>
-          <div style="font-size:10px;color:#94A3B8;font-weight:600;margin-bottom:2px">📱 TELEFONE</div>
-          <input type="text" value="${c.tel||''}" placeholder="Não informado"
-            onchange="editarContato_inline(${c.id},'tel',this.value)"
-            style="width:100%;font-size:12px;border:1px solid #E2E8F0;border-radius:6px;padding:4px 8px;color:#1a1a2e;outline:none"
-            onfocus="this.style.borderColor='#7C3AED'" onblur="this.style.borderColor='#E2E8F0'">
-        </div>
-        <div>
-          <div style="font-size:10px;color:#94A3B8;font-weight:600;margin-bottom:2px">🔑 CHAVE PIX</div>
-          <input type="text" value="${c.pix||''}" placeholder="Não informado"
-            onchange="editarContato_inline(${c.id},'pix',this.value)"
-            style="width:100%;font-size:12px;border:1px solid #E2E8F0;border-radius:6px;padding:4px 8px;color:#1a1a2e;outline:none"
-            onfocus="this.style.borderColor='#7C3AED'" onblur="this.style.borderColor='#E2E8F0'">
-        </div>
-        <div>
-          <div style="font-size:10px;color:#94A3B8;font-weight:600;margin-bottom:2px">✉️ E-MAIL</div>
-          <input type="text" value="${c.email||''}" placeholder="Não informado"
-            onchange="editarContato_inline(${c.id},'email',this.value)"
-            style="width:100%;font-size:12px;border:1px solid #E2E8F0;border-radius:6px;padding:4px 8px;color:#1a1a2e;outline:none"
-            onfocus="this.style.borderColor='#7C3AED'" onblur="this.style.borderColor='#E2E8F0'">
-        </div>
-        <div>
-          <div style="font-size:10px;color:#94A3B8;font-weight:600;margin-bottom:2px">📝 OBSERVAÇÃO</div>
-          <input type="text" value="${c.obs||''}" placeholder="Nenhuma"
-            onchange="editarContato_inline(${c.id},'obs',this.value)"
-            style="width:100%;font-size:12px;border:1px solid #E2E8F0;border-radius:6px;padding:4px 8px;color:#1a1a2e;outline:none"
-            onfocus="this.style.borderColor='#7C3AED'" onblur="this.style.borderColor='#E2E8F0'">
-        </div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span id="arrow-${c.id}" style="color:#94A3B8;font-size:12px;transition:transform .2s">▼</span>
+        <button onclick="event.stopPropagation();excluirContato(${c.id})" class="btn btn-danger btn-sm" title="Excluir" style="padding:4px 8px">🗑</button>
       </div>
     </div>
-    <div class="contato-actions" style="align-self:flex-start">
-      <button class="btn btn-danger btn-sm" onclick="excluirContato(${c.id})" title="Excluir">🗑</button>
+    <div id="form-cc-${c.id}" style="display:none;padding:0 16px 14px;border-top:1px solid #F1F5F9">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
+        <div>
+          <div style="font-size:10px;color:#94A3B8;font-weight:600;margin-bottom:3px">📱 TELEFONE</div>
+          <input type="text" value="${c.tel||''}" placeholder="Não informado"
+            onchange="editarContato_inline(${c.id},'tel',this.value)"
+            style="width:100%;font-size:13px;border:1px solid #E2E8F0;border-radius:6px;padding:6px 10px;color:#1a1a2e;outline:none"
+            onfocus="this.style.borderColor='#7C3AED'" onblur="this.style.borderColor='#E2E8F0'">
+        </div>
+        <div>
+          <div style="font-size:10px;color:#94A3B8;font-weight:600;margin-bottom:3px">🔑 CHAVE PIX</div>
+          <input type="text" value="${c.pix||''}" placeholder="Não informado"
+            onchange="editarContato_inline(${c.id},'pix',this.value)"
+            style="width:100%;font-size:13px;border:1px solid #E2E8F0;border-radius:6px;padding:6px 10px;color:#1a1a2e;outline:none"
+            onfocus="this.style.borderColor='#7C3AED'" onblur="this.style.borderColor='#E2E8F0'">
+        </div>
+        <div>
+          <div style="font-size:10px;color:#94A3B8;font-weight:600;margin-bottom:3px">✉️ E-MAIL</div>
+          <input type="text" value="${c.email||''}" placeholder="Não informado"
+            onchange="editarContato_inline(${c.id},'email',this.value)"
+            style="width:100%;font-size:13px;border:1px solid #E2E8F0;border-radius:6px;padding:6px 10px;color:#1a1a2e;outline:none"
+            onfocus="this.style.borderColor='#7C3AED'" onblur="this.style.borderColor='#E2E8F0'">
+        </div>
+        <div>
+          <div style="font-size:10px;color:#94A3B8;font-weight:600;margin-bottom:3px">📝 OBSERVAÇÃO</div>
+          <input type="text" value="${c.obs||''}" placeholder="Nenhuma"
+            onchange="editarContato_inline(${c.id},'obs',this.value)"
+            style="width:100%;font-size:13px;border:1px solid #E2E8F0;border-radius:6px;padding:6px 10px;color:#1a1a2e;outline:none"
+            onfocus="this.style.borderColor='#7C3AED'" onblur="this.style.borderColor='#E2E8F0'">
+        </div>
+      </div>
     </div>
   </div>`;
 }
 
-function editarContato_inline(id, campo, valor){
+function toggleContato(id){
+  const form=document.getElementById('form-cc-'+id);
+  const arrow=document.getElementById('arrow-'+id);
+  const aberto=form.style.display!=='none';
+  form.style.display=aberto?'none':'block';
+  arrow.style.transform=aberto?'':'rotate(180deg)';
+}
+function editarContato_inline(id,campo,valor){
   const idx=contatos.findIndex(c=>c.id===id);if(idx<0)return;
   contatos[idx][campo]=valor;
   // Sincroniza de volta nas indicações se for pix ou tel
@@ -1047,3 +1059,4 @@ sincronizarContatos();renderMetrics();renderIndicacoes();
 </script>
 </body>
 </html>
+
